@@ -6,7 +6,7 @@ A collection of [Agent Skills](https://agentskills.io) (`SKILL.md` folders) for 
 
 | Skill | Say | What it does |
 |---|---|---|
-| [dev-env-setup](skills/dev-env-setup/) | "let's start a new project" | Sets up git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans your first feature |
+| [vibe-scaffold](skills/vibe-scaffold/) | "let's start a new project" | Sets up git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans your first feature |
 
 ## Install
 
@@ -14,7 +14,7 @@ A collection of [Agent Skills](https://agentskills.io) (`SKILL.md` folders) for 
 
 ```bash
 git clone https://github.com/OWNER/thetaskills ~/thetaskills
-~/thetaskills/install.sh                  # or: ./install.sh dev-env-setup
+~/thetaskills/install.sh                  # or: ./install.sh vibe-scaffold
 ```
 
 This links each skill into `~/.agents/skills` and runs any setup a skill ships with (`scripts/setup.sh`). Each skill's README lists exactly what its setup installs. Use `--link-only` to skip setup.
@@ -23,7 +23,7 @@ This links each skill into `~/.agents/skills` and runs any setup a skill ships w
 
 ```bash
 npx skills add OWNER/thetaskills -g                         # pick from a list
-npx skills add OWNER/thetaskills -g --skill dev-env-setup   # just one
+npx skills add OWNER/thetaskills -g --skill vibe-scaffold   # just one
 ```
 
 **Strands:** see [`examples/strands_agent.py`](examples/strands_agent.py).

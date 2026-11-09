@@ -1,4 +1,4 @@
-# dev-env-setup
+# vibe-scaffold
 
 Say **"let's start a new project"** and the agent sets up the repo the same way every time:
 
@@ -14,12 +14,12 @@ The thetaskills `install.sh` runs this. If you installed with `npx skills add`, 
 
 | Thing | Where | How |
 |---|---|---|
-| superpowers, ponytail skills | clones in `~/.dev-env-setup/`, symlinked into `~/.agents/skills/` | `git clone --depth 1` |
+| superpowers, ponytail skills | clones in `~/.vibe-scaffold/`, symlinked into `~/.agents/skills/` | `git clone --depth 1` |
 | OpenSpec CLI | global npm | `npm install -g @fission-ai/openspec` |
 | rtk | brew or cargo | plus `rtk init -g --opencode` and a pi hook if those agents are installed |
-| headroom | `uv tool` (or pipx) | plus `~/.dev-env-setup/aliases.sh` with `oc` = `headroom wrap opencode` |
+| headroom | `uv tool` (or pipx) | plus `~/.vibe-scaffold/aliases.sh` with `oc` = `headroom wrap opencode` |
 
-Add `source ~/.dev-env-setup/aliases.sh` to your `~/.zshrc` or `~/.bashrc`.
+Add `source ~/.vibe-scaffold/aliases.sh` to your `~/.zshrc` or `~/.bashrc`.
 
 Per repo, only two things are written: what `openspec init` creates, and a marked block in `AGENTS.md`.
 
@@ -44,10 +44,10 @@ Options (environment variables):
 ## Uninstall
 
 ```bash
-for l in ~/.agents/skills/*; do   # remove only links that point into ~/.dev-env-setup
-  [ -L "$l" ] && case "$(readlink "$l")" in "$HOME/.dev-env-setup"*) rm "$l";; esac
+for l in ~/.agents/skills/*; do   # remove only links that point into ~/.vibe-scaffold
+  [ -L "$l" ] && case "$(readlink "$l")" in "$HOME/.vibe-scaffold"*) rm "$l";; esac
 done
-rm -rf ~/.dev-env-setup ~/.agents/skills/dev-env-setup
+rm -rf ~/.vibe-scaffold ~/.agents/skills/vibe-scaffold
 npm uninstall -g @fission-ai/openspec
 rtk init -g --uninstall; uv tool uninstall headroom-ai
 ```

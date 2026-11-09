@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# dev-env-setup: one-time (re-runnable) machine setup.
+# vibe-scaffold: one-time (re-runnable) machine setup.
 #   Skills  : superpowers, ponytail -> ~/.agents/skills  (pi + opencode read this; Strands is pointed at it)
 #   CLIs    : openspec, rtk, headroom
 #   Hooks   : rtk rewrite hooks for opencode and pi
 # Re-run any time to update everything.
 set -eo pipefail
 
-STACK="${DEV_ENV_HOME:-$HOME/.dev-env-setup}"   # git checkouts live here
+STACK="${VIBE_SCAFFOLD_HOME:-$HOME/.vibe-scaffold}"   # git checkouts live here
 SKILLS="$HOME/.agents/skills"                     # Agent Skills standard location
 mkdir -p "$STACK" "$SKILLS"
 
@@ -65,7 +65,7 @@ if ! have headroom; then
   else warn "install uv (or pipx), then: uv tool install --python 3.13 'headroom-ai[all]'"; fi
 fi
 cat > "$STACK/aliases.sh" <<'EOF'
-# Source from ~/.bashrc or ~/.zshrc:  source ~/.dev-env-setup/aliases.sh
+# Source from ~/.bashrc or ~/.zshrc:  source ~/.vibe-scaffold/aliases.sh
 # headroom compresses at launch time, so start agents through it.
 alias oc='headroom wrap opencode'
 # pi isn't in headroom's wrap list: run `headroom proxy --port 8787` and point pi's provider baseUrl at it.
