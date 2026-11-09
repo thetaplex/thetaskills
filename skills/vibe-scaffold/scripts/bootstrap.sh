@@ -58,7 +58,8 @@ fi
 # Global stack checks (installed by setup.sh, not here)
 S="$HOME/.agents/skills"
 for s in brainstorming ponytail; do
-  [ -f "$S/$s/SKILL.md" ] && ok "skill $s" || fail "skill $s missing from $S (run scripts/setup.sh)"
+  [ -f "$S/$s/SKILL.md" ] && ok "skill $s" \
+    || warn "skill $s not in $S (fine if your agent has it as a plugin; otherwise run scripts/setup.sh)"
 done
 rtk gain >/dev/null 2>&1 && ok "rtk" || fail "rtk missing or wrong binary (run scripts/setup.sh)"
 have headroom && ok "headroom" || warn "headroom not installed (run scripts/setup.sh)"

@@ -1,0 +1,12 @@
+{
+  "name": "thetaskills",
+  "interface": { "displayName": "thetaskills" },
+  "plugins": [
+    {
+      "name": "thetaskills",
+      "source": { "source": "url", "url": "https://github.com/thetaplex/thetaskills.git", "ref": "main" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Developer Tools"
+    }
+  ]
+}

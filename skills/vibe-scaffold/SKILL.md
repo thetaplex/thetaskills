@@ -21,7 +21,7 @@ Set up the current repository (or a folder the user names) with the standard age
 
 3. **Read the output.** Each line starts with `OK`, `SKIP`, `WARN`, `FAIL` or `STOP`.
    - `STOP` means the folder is inside another git repo. Ask the user whether they meant the repo root (rerun with that path) or really want this subfolder set up on its own (rerun with `ALLOW_SUBDIR=1`).
-   - A `FAIL` about a missing tool or skill means the machine-wide stack isn't installed. Ask the user whether to run `bash scripts/setup.sh`. It clones superpowers and ponytail into `~/.vibe-scaffold`, links them into `~/.agents/skills`, and installs openspec (npm -g), rtk (brew or cargo) and headroom (uv), plus rtk hooks for opencode and pi. Only run it with their OK, then run bootstrap again.
+   - A `FAIL` about a missing tool, or a `WARN` about a missing skill that your agent doesn't have loaded either, means the machine-wide stack isn't installed. Ask the user whether to run `bash scripts/setup.sh`. It clones superpowers and ponytail into `~/.vibe-scaffold`, links them into `~/.agents/skills`, and installs openspec (npm -g), rtk (brew or cargo) and headroom (uv), plus rtk hooks for opencode and pi. Only run it with their OK, then run bootstrap again.
    - Fix anything else that is project-local.
 
 4. **Fill in the project section.** In `AGENTS.md`, replace the `<!-- describe the project -->` placeholder with the name and purpose.

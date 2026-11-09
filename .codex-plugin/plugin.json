@@ -1,0 +1,20 @@
+{
+  "name": "thetaskills",
+  "version": "0.1.0",
+  "description": "Agent skills for vibe-coded projects. vibe-scaffold: say \"let's start a new project\" to get git, OpenSpec specs and an AGENTS.md with guardrails.",
+  "author": { "name": "thetaplex", "url": "https://github.com/thetaplex" },
+  "homepage": "https://github.com/thetaplex/thetaskills",
+  "repository": "https://github.com/thetaplex/thetaskills",
+  "license": "MIT",
+  "keywords": ["skills", "scaffold", "openspec", "vibe-coding"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "thetaskills",
+    "shortDescription": "Scaffold vibe-coded projects with guardrails",
+    "developerName": "thetaplex",
+    "category": "Developer Tools",
+    "capabilities": ["Instructions"],
+    "websiteURL": "https://github.com/thetaplex/thetaskills",
+    "defaultPrompt": ["Let's start a new project."]
+  }
+}

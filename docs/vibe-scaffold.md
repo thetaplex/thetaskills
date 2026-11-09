@@ -10,7 +10,7 @@ Then it starts brainstorming your first feature and writes it up as an OpenSpec 
 
 ## Machine setup (`scripts/setup.sh`)
 
-The thetaskills `install.sh` runs this. If you installed with `npx skills add`, the agent offers to run it the first time it's needed. It's safe to re-run, and re-running updates everything.
+The skill offers to run this the first time it finds tools missing. You can also run it yourself: `bash skills/vibe-scaffold/scripts/setup.sh` from a checkout, or `scripts/install.sh` to link the skills and run it in one go. It's safe to re-run, and re-running updates everything.
 
 | Thing | Where | How |
 |---|---|---|
@@ -27,7 +27,7 @@ Per repo, only two things are written: what `openspec init` creates, and a marke
 
 - **opencode:** use `oc` to start it through headroom.
 - **pi:** headroom has no `wrap pi`, so run `headroom proxy --port 8787` and point your provider's base URL at it.
-- **Strands:** see [`examples/strands_agent.py`](../../examples/strands_agent.py).
+- **Strands:** see [`examples/strands_agent.py`](../examples/strands_agent.py).
 - After setup, restart the agent (pi: `/reload`) so it picks up the repo's new `/opsx:*` commands. The skill works around this for the first proposal.
 
 ## Usage
@@ -47,7 +47,7 @@ Options (environment variables):
 for l in ~/.agents/skills/*; do   # remove only links that point into ~/.vibe-scaffold
   [ -L "$l" ] && case "$(readlink "$l")" in "$HOME/.vibe-scaffold"*) rm "$l";; esac
 done
-rm -rf ~/.vibe-scaffold ~/.agents/skills/vibe-scaffold
+rm -rf ~/.vibe-scaffold   # then remove the skill itself: see INSTALL.md#uninstall
 npm uninstall -g @fission-ai/openspec
 rtk init -g --uninstall; uv tool uninstall headroom-ai
 ```
