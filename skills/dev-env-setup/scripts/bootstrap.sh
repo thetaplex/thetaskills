@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Per-repo setup for the new-project skill. Idempotent. Prints OK/SKIP/WARN/FAIL lines.
+# Per-repo setup for the dev-env-setup skill. Idempotent. Prints OK/SKIP/WARN/FAIL lines.
 DIR="${1:-$PWD}"
 mkdir -p "$DIR" && cd "$DIR" || { echo "FAIL cannot enter $DIR"; exit 1; }
 

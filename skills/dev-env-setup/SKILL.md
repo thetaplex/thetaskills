@@ -1,9 +1,9 @@
 ---
-name: new-project
+name: dev-env-setup
 description: Bootstraps a new code project with the user's standard agent stack - git, OpenSpec specs, an AGENTS.md wired for superpowers, ponytail, rtk and headroom. Use whenever the user says "let's start a new project", "start a new project", "new repo", "set up this repo", or asks to scaffold or initialize a project.
 ---
 
-# New project
+# Dev env setup
 
 Set up the current repository (or a folder the user names) with the standard agent stack, then hand off to planning.
 
@@ -21,7 +21,7 @@ Set up the current repository (or a folder the user names) with the standard age
 
 3. **Read the output.** Each line starts with `OK`, `SKIP`, `WARN`, `FAIL` or `STOP`.
    - `STOP` means the folder is inside another git repo. Ask the user whether they meant the repo root (rerun with that path) or really want this subfolder set up on its own (rerun with `ALLOW_SUBDIR=1`).
-   - A `FAIL` about a missing tool or skill means the machine-wide stack isn't installed. Ask the user whether to run `bash scripts/setup.sh`. It clones superpowers and ponytail into `~/.agent-stack`, links them into `~/.agents/skills`, and installs openspec (npm -g), rtk (brew or cargo) and headroom (uv), plus rtk hooks for opencode and pi. Only run it with their OK, then run bootstrap again.
+   - A `FAIL` about a missing tool or skill means the machine-wide stack isn't installed. Ask the user whether to run `bash scripts/setup.sh`. It clones superpowers and ponytail into `~/.dev-env-setup`, links them into `~/.agents/skills`, and installs openspec (npm -g), rtk (brew or cargo) and headroom (uv), plus rtk hooks for opencode and pi. Only run it with their OK, then run bootstrap again.
    - Fix anything else that is project-local.
 
 4. **Fill in the project section.** In `AGENTS.md`, replace the `<!-- describe the project -->` placeholder with the name and purpose.

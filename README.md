@@ -1,82 +1,40 @@
-# agent-stack
+# thetaskills
 
-Say **"let's start a new project"** to your coding agent and it sets up the repo the same way every time:
+A collection of [Agent Skills](https://agentskills.io) (`SKILL.md` folders) for coding agents. They're tested with **pi**, **opencode** and **Strands Agents**, and should work with any agent that reads `~/.agents/skills`.
 
-- a git repo
-- [OpenSpec](https://github.com/Fission-AI/OpenSpec) specs, plus the `/opsx:*` commands for your agents
-- an `AGENTS.md` section telling the agent to work spec-first ([superpowers](https://github.com/obra/superpowers) process, [ponytail](https://github.com/DietrichGebert/ponytail) minimalism, [rtk](https://github.com/rtk-ai/rtk) for noisy shell commands)
+## Skills
 
-Then it starts brainstorming your first feature and writes it up as an OpenSpec proposal.
-
-It works with **pi**, **opencode** and **Strands Agents**. Any agent that reads `~/.agents/skills` (the [Agent Skills](https://agentskills.io) standard location) should work too.
+| Skill | Say | What it does |
+|---|---|---|
+| [dev-env-setup](skills/dev-env-setup/) | "let's start a new project" | Sets up git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans your first feature |
 
 ## Install
 
-### Full stack (recommended)
+**All skills, kept up to date with git:**
 
 ```bash
-git clone https://github.com/OWNER/agent-stack ~/.agent-stack/agent-stack
-~/.agent-stack/agent-stack/install.sh
-echo 'source ~/.agent-stack/aliases.sh' >> ~/.zshrc   # or ~/.bashrc
+git clone https://github.com/OWNER/thetaskills ~/thetaskills
+~/thetaskills/install.sh                  # or: ./install.sh dev-env-setup
 ```
 
-Re-run `install.sh` after `git pull` to update everything.
+This links each skill into `~/.agents/skills` and runs any setup a skill ships with (`scripts/setup.sh`). Each skill's README lists exactly what its setup installs. Use `--link-only` to skip setup.
 
-### Just the skill
+**With the skills CLI:**
 
 ```bash
-npx skills add OWNER/agent-stack -g
+npx skills add OWNER/thetaskills -g                         # pick from a list
+npx skills add OWNER/thetaskills -g --skill dev-env-setup   # just one
 ```
 
-The first time you start a project, the agent notices the rest of the stack is missing. It asks before running the bundled `scripts/setup.sh`.
+**Strands:** see [`examples/strands_agent.py`](examples/strands_agent.py).
 
-## What the installer changes on your machine
+## Adding a skill
 
-| Thing | Where | How |
-|---|---|---|
-| superpowers, ponytail skills | clones in `~/.agent-stack/`, symlinked into `~/.agents/skills/` | `git clone --depth 1` |
-| new-project skill | symlink in `~/.agents/skills/` (git install only) | |
-| OpenSpec CLI | global npm | `npm install -g @fission-ai/openspec` |
-| rtk | brew or cargo | plus `rtk init -g --opencode` and a pi hook if those agents are installed |
-| headroom | `uv tool` (or pipx) | plus `~/.agent-stack/aliases.sh` with `oc` = `headroom wrap opencode` |
-
-Nothing is installed per repo except what OpenSpec's own `openspec init` writes and the marked block in `AGENTS.md`.
-
-## Per-agent notes
-
-- **opencode** reads `~/.agents/skills`. Use `oc` to start it through headroom.
-- **pi** reads `~/.agents/skills`. headroom has no `wrap pi`, so run `headroom proxy --port 8787` and point your provider's base URL at it.
-- **Strands** is an SDK, so you point it at the skills folder yourself. See [`examples/strands_agent.py`](examples/strands_agent.py).
-- After setup, restart the agent (pi: `/reload`) so it picks up the repo's new `/opsx:*` commands. The skill works around this for the first proposal.
-
-## Usage
-
-From inside the folder you want to set up:
-
-> let's start a new project
-
-Running it again is safe: steps already done are skipped. If you run it from a subfolder of an existing repo, it stops and asks first.
-
-Options (environment variables):
-
-- `OPENSPEC_TOOLS=opencode,pi` picks the OpenSpec targets. By default it uses the agents it finds installed.
-- `ALLOW_SUBDIR=1` sets up a subfolder of another repo on its own.
-
-## Uninstall
-
-```bash
-for l in ~/.agents/skills/*; do   # remove only links that point into ~/.agent-stack
-  [ -L "$l" ] && case "$(readlink "$l")" in "$HOME/.agent-stack"*) rm "$l";; esac
-done
-rm -rf ~/.agent-stack
-npm uninstall -g @fission-ai/openspec
-rtk init -g --uninstall; uv tool uninstall headroom-ai
-```
-
-## Credits
-
-This repo only wires together other people's work: [superpowers](https://github.com/obra/superpowers), [ponytail](https://github.com/DietrichGebert/ponytail), [OpenSpec](https://github.com/Fission-AI/OpenSpec), [rtk](https://github.com/rtk-ai/rtk), [headroom](https://github.com/chopratejas/headroom). Each keeps its own license.
+1. Create `skills/<name>/SKILL.md`. Use lowercase-hyphen names, and make the frontmatter `name` match the folder name.
+2. Optional: put helper scripts in `skills/<name>/scripts/`. If the skill needs machine-wide tools, add `scripts/setup.sh`. Make it safe to re-run, and have it ask nothing interactively.
+3. Optional: add `skills/<name>/README.md` for humans.
+4. Add a row to the table above.
 
 ## License
 
-MIT
+MIT. Skills that install third-party tools credit them in their own README.

@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
-# One-time (and re-runnable) machine setup for the shared agent stack.
-#   Skills  : superpowers, ponytail, new-project  -> ~/.agents/skills  (pi + opencode read this; Strands is pointed at it)
+# dev-env-setup: one-time (re-runnable) machine setup.
+#   Skills  : superpowers, ponytail -> ~/.agents/skills  (pi + opencode read this; Strands is pointed at it)
 #   CLIs    : openspec, rtk, headroom
 #   Hooks   : rtk rewrite hooks for opencode and pi
 # Re-run any time to update everything.
 set -eo pipefail
 
-STACK="${AGENT_STACK_HOME:-$HOME/.agent-stack}"   # git checkouts live here
+STACK="${DEV_ENV_HOME:-$HOME/.dev-env-setup}"   # git checkouts live here
 SKILLS="$HOME/.agents/skills"                     # Agent Skills standard location
-SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"   # .../skills/new-project
-REPO_DIR="$(cd "$SKILL_DIR/../.." && pwd -P)"
 mkdir -p "$STACK" "$SKILLS"
 
 log()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
@@ -34,16 +32,9 @@ clone_or_pull https://github.com/DietrichGebert/ponytail "$STACK/ponytail"
 link_pack "$STACK/superpowers"
 link_pack "$STACK/ponytail"
 
-# From a git checkout (install.sh), link new-project so `git pull` updates it.
-# From `npx skills add`, the skill is already installed where your agent looks - leave it alone.
-if [ -f "$REPO_DIR/install.sh" ]; then
-  ln -sfn "$SKILL_DIR" "$SKILLS/new-project"
-  chmod +x "$SKILL_DIR/scripts/"*.sh
-fi
-
 for l in "$SKILLS"/*; do [ -L "$l" ] && [ ! -e "$l" ] && rm "$l"; done   # drop links to removed skills
 
-# --- 2. OpenSpec (per-repo init happens in the new-project skill) ------------
+# --- 2. OpenSpec (per-repo init happens in bootstrap.sh) ------------
 log "OpenSpec"
 if have npm; then { npm install -g @fission-ai/openspec@latest >/dev/null && openspec --version; } || warn "openspec install failed"
 else warn "npm not found - install Node.js >= 20.19, then: npm install -g @fission-ai/openspec@latest"; fi
@@ -74,7 +65,7 @@ if ! have headroom; then
   else warn "install uv (or pipx), then: uv tool install --python 3.13 'headroom-ai[all]'"; fi
 fi
 cat > "$STACK/aliases.sh" <<'EOF'
-# Source from ~/.bashrc or ~/.zshrc:  source ~/.agent-stack/aliases.sh
+# Source from ~/.bashrc or ~/.zshrc:  source ~/.dev-env-setup/aliases.sh
 # headroom compresses at launch time, so start agents through it.
 alias oc='headroom wrap opencode'
 # pi isn't in headroom's wrap list: run `headroom proxy --port 8787` and point pi's provider baseUrl at it.
@@ -91,6 +82,6 @@ Next:
       pi:       pi install git:github.com/DietrichGebert/ponytail
       opencode: add "superpowers@git+https://github.com/obra/superpowers.git" and
                 "@dietrichgebert/ponytail" to the plugin list in ~/.config/opencode/opencode.json
-  * Strands: see examples/strands_agent.py in the agent-stack repo.
+  * Strands: see examples/strands_agent.py in the thetaskills repo.
   * In any agent, say: "let's start a new project"
 EOF

@@ -1,4 +1,4 @@
-"""Strands coding agent that uses the same shared skills as pi and opencode.
+"""Strands coding agent that loads every skill in ~/.agents/skills (thetaskills and anything else).
 
 pip install strands-agents   (>= 1.64; file/shell tools now ship in strands.vended_tools)
 Run it from inside a repo (after ./install.sh):  python strands_agent.py "let's start a new project"
