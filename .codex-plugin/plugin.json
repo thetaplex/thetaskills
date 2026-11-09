@@ -5,7 +5,7 @@
   "author": { "name": "thetaplex", "url": "https://github.com/thetaplex" },
   "homepage": "https://github.com/thetaplex/thetaskills",
   "repository": "https://github.com/thetaplex/thetaskills",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": ["skills", "scaffold", "openspec", "vibe-coding"],
   "skills": "./skills/",
   "interface": {

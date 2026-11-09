@@ -19,8 +19,8 @@ Claude Code, Codex, Strands and other agents: see [INSTALL.md](INSTALL.md).
 
 ## Contributing
 
-New skills are welcome. See [CONTRIBUTING](.github/CONTRIBUTING.md) for the layout and checks, and run `npm test` before opening a PR.
+New skills are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for the layout and checks, and run `npm test` before opening a PR.
 
 ## License
 
-[MIT](LICENSE). Skills that install third-party tools credit them in their page under [`docs/`](docs/).
+[Apache-2.0](LICENSE). Skills that install third-party tools credit them in their page under [`docs/`](docs/).

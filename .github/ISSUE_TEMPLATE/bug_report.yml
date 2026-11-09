@@ -1,0 +1,41 @@
+name: Bug report
+description: A skill does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not paste API keys or tokens. Security issues go through SECURITY.md, not here.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+      placeholder: vibe-scaffold
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked the agent, what you expected, and what you got.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Output of the skill's script, if there was one, with secrets removed.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: thetaskills version
+      description: Version, or the commit hash.
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Agent and platform
+      placeholder: Claude Code 2.x on macOS 15
+    validations:
+      required: true

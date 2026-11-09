@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Agent skills for vibe-coded projects, starting with vibe-scaffold: say \"let's start a new project\" and get git, OpenSpec specs and an AGENTS.md with guardrails.",
   "keywords": ["pi-package", "pi", "opencode", "skills", "agent-skills", "scaffold", "openspec"],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": { "name": "thetaplex", "url": "https://github.com/thetaplex" },
   "homepage": "https://github.com/thetaplex/thetaskills",
   "repository": { "type": "git", "url": "git+https://github.com/thetaplex/thetaskills.git" },

@@ -8,6 +8,15 @@ Thanks for helping out. To add a skill:
 4. Add a row to the skills table in `README.md`.
 5. Run `npm test` (or `bash tests/run.sh`).
 
-[`AGENTS.md`](../AGENTS.md) has the full rules. Your coding agent reads them automatically.
+[`AGENTS.md`](AGENTS.md) has the full rules. Your coding agent reads them automatically.
 
 Bug reports are welcome too. Please include your agent (pi, opencode, …), OS, and the output of the skill's script if there was one.
+
+By taking part you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Pull requests
+
+- Keep each PR to one change.
+- Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+- Add a line under `Unreleased` in [CHANGELOG.md](CHANGELOG.md) for user-visible changes.
+- When you bump the version, bump it in all four manifests (see [AGENTS.md](AGENTS.md)).
