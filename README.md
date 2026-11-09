@@ -1,6 +1,6 @@
 # thetaskills
 
-Agent skills for vibe-coded projects. They work with **pi**, **opencode**, **Strands Agents**, **Claude Code**, **Codex**, and any agent that reads the [Agent Skills](https://agentskills.io) format.
+The agent skills we use internally at ThetaPlex, published so anyone can use them. They work with **pi**, **opencode**, **Strands Agents**, **Claude Code**, **Codex**, and any agent that reads the [Agent Skills](https://agentskills.io) format.
 
 ## Skills
 
@@ -9,6 +9,8 @@ Agent skills for vibe-coded projects. They work with **pi**, **opencode**, **Str
 | [vibe-scaffold](skills/vibe-scaffold/SKILL.md) | "let's start a new project" | Scaffolds the repo with git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans your first feature. [Details](docs/vibe-scaffold.md) |
 
 ## Install
+
+Prerequisites: your agent, plus whatever tools a skill needs, which its page in [`docs/`](docs/) lists. vibe-scaffold's setup script needs [Node.js](https://nodejs.org) 20.19 or later, [Homebrew](https://brew.sh) or [cargo](https://rustup.rs), and [uv](https://docs.astral.sh/uv/getting-started/installation/) or [pipx](https://pipx.pypa.io).
 
 ```bash
 pi install git:github.com/thetaplex/thetaskills                  # pi
@@ -19,7 +21,7 @@ Claude Code, Codex, Strands and other agents: see [INSTALL.md](INSTALL.md).
 
 ## Contributing
 
-New skills are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for the layout and checks, and run `npm test` before opening a PR.
+This repo is where ThetaPlex keeps its skills, so new internal skills go here. Outside contributions are welcome too. See [CONTRIBUTING](CONTRIBUTING.md) for the layout and checks, and run `npm test` before opening a PR.
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "name": "thetaskills",
   "version": "0.1.0",
-  "description": "Agent skills for vibe-coded projects. vibe-scaffold: say \"let's start a new project\" to get git, OpenSpec specs and an AGENTS.md with guardrails.",
+  "description": "The agent skills ThetaPlex uses internally, published for pi, opencode, Claude Code, Codex and any Agent Skills agent.",
   "author": { "name": "thetaplex", "url": "https://github.com/thetaplex" },
   "homepage": "https://github.com/thetaplex/thetaskills",
   "repository": "https://github.com/thetaplex/thetaskills",

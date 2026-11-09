@@ -1,12 +1,12 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "thetaskills",
-  "description": "Agent skills for vibe-coded projects.",
+  "description": "The agent skills ThetaPlex uses internally, published for pi, opencode, Claude Code, Codex and any Agent Skills agent.",
   "owner": { "name": "thetaplex", "url": "https://github.com/thetaplex" },
   "plugins": [
     {
       "name": "thetaskills",
-      "description": "vibe-scaffold and friends: scaffold vibe-coded projects with guardrails.",
+      "description": "The agent skills ThetaPlex uses internally, published for pi, opencode, Claude Code, Codex and any Agent Skills agent.",
       "version": "0.1.0",
       "source": "./",
       "category": "development"
