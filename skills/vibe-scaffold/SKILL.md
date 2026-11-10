@@ -26,9 +26,9 @@ Set up the current repository (or a folder the user names) with the standard age
 
 4. **Fill in the project section.** In `AGENTS.md`, replace the `<!-- describe the project -->` placeholder with the name and purpose.
 
-5. **Hand off to planning.** Use the superpowers `brainstorming` skill to shape the first feature, then capture the result as an OpenSpec change. The `/opsx:*` commands and OpenSpec skills were just created in this repo, so this session won't have loaded them yet. Read `<project-dir>/.opencode/skills/openspec-propose/SKILL.md` (or `<project-dir>/.pi/skills/openspec-propose/SKILL.md`) and follow it directly. Write every file inside `<project-dir>`. Tell the user that `/opsx:propose` works natively after they restart the agent (pi: `/reload`). Follow ponytail's ladder while you do it: start with the smallest version that works.
+5. **Hand off to planning.** If `<project-dir>` isn't the folder this session started in, read `<project-dir>/AGENTS.md` now and follow it for the rest of the session, as if it had loaded at startup. Use the superpowers `brainstorming` skill to shape the first feature, then capture the result as an OpenSpec change. The `/opsx:*` commands and OpenSpec skills were just created in this repo, so this session won't have loaded them yet. Read `<project-dir>/.opencode/skills/openspec-propose/SKILL.md` (or `<project-dir>/.pi/skills/openspec-propose/SKILL.md`) and follow it directly. Write every file inside `<project-dir>`. Tell the user that `/opsx:propose` works natively after they restart the agent (pi: `/reload`). Follow ponytail's ladder while you do it: start with the smallest version that works.
 
-6. **Report back briefly:** what was set up, any `WARN`/`FAIL` lines, and the proposed first change. If `<project-dir>` isn't the folder this session started in, tell the user to `cd` into it and start the agent again there, so the project's `AGENTS.md` and `/opsx:*` commands load.
+6. **Report back briefly:** what was set up, any `WARN`/`FAIL` lines, and the proposed first change. If `<project-dir>` isn't the folder this session started in, say in one line that you've loaded its `AGENTS.md` and can carry on here, and that starting the agent from that folder later makes `/opsx:*` work natively.
 
 ## Rules
 
