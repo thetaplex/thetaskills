@@ -10,13 +10,13 @@ Then it starts brainstorming your first feature and writes it up as an OpenSpec 
 
 ## Machine setup (`scripts/setup.sh`)
 
-The skill offers to run this the first time it finds tools missing. You can also run it yourself: `bash skills/vibe-scaffold/scripts/setup.sh` from a checkout, or `scripts/install.sh` to link the skills and run it in one go. It's safe to re-run, and re-running updates everything.
+The skill offers to run this the first time it finds tools missing. You can also run it yourself: `bash skills/vibe-scaffold/scripts/setup.sh` from a checkout, or `scripts/install.sh` to link the skills and run it in one go. It's safe to re-run, and re-running updates everything to its latest release.
 
 | Thing | Where | How |
 |---|---|---|
-| superpowers, ponytail skills | clones in `~/.vibe-scaffold/`, symlinked into `~/.agents/skills/` | `git clone --depth 1` |
+| superpowers, ponytail skills | clones in `~/.vibe-scaffold/`, symlinked into `~/.agents/skills/` | `git clone --depth 1` at the newest `vX.Y.Z` release tag (default branch if a repo has no tags) |
 | OpenSpec CLI | global npm | `npm install -g @fission-ai/openspec` |
-| rtk | brew or cargo | plus `rtk init -g --opencode` and a pi hook if those agents are installed |
+| rtk | brew, or cargo at the newest release tag | plus `rtk init -g --opencode` and a pi hook if those agents are installed |
 | headroom | `uv tool` (or pipx) | plus `~/.vibe-scaffold/aliases.sh` with `oc` = `headroom wrap opencode` |
 
 Add `source ~/.vibe-scaffold/aliases.sh` to your `~/.zshrc` or `~/.bashrc`.
