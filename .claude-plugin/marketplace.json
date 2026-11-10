@@ -7,7 +7,7 @@
     {
       "name": "thetaskills",
       "description": "The agent skills ThetaPlex uses internally, published for pi, opencode, Claude Code, Codex and any Agent Skills agent.",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "source": "./",
       "category": "development"
     }
