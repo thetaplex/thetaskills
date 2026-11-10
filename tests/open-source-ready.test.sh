@@ -74,3 +74,11 @@ for d in empty eco alt leak gi npm "my repo"; do              # read-only: no ne
   before=$(git -C "$T/$d" status --porcelain); run "$T/$d"
   [ "$(git -C "$T/$d" status --porcelain)" = "$before" ] || { echo "check.sh changed $d"; exit 1; }
 done
+
+# --- Task 4: GitHub checks are skipped offline -----------------------------
+run "$T/empty"; has '^SKIP +owner'; has '^SKIP +ci'; has '^SKIP +description'; has '^SKIP +peers'; rc 1
+run "$T/gi"; hasnt '^(MISSING|FAIL) +(owner|ci|description|peers)'
+
+# web-UI merges are committed by GitHub itself; not personal data
+repo "$T/web"; echo w > "$T/web/w"; git -C "$T/web" add w
+GIT_COMMITTER_EMAIL=noreply@github.com git -C "$T/web" commit -qm w; run "$T/web"; has '^OK +emails'

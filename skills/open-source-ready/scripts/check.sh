@@ -84,7 +84,7 @@ else
   else out FAIL secrets "possible secrets in history (scanner: builtin) at $(echo "$hits" | tr '\n' ' ')"; fi
 fi
 if git rev-parse -q --verify HEAD >/dev/null; then
-  emails=$(git log --all --format='%ae%n%ce' | sort -u | grep -v '@users\.noreply\.github\.com$' | tr '\n' ' ')
+  emails=$(git log --all --format='%ae%n%ce' | sort -u | grep -vE '(@users\.noreply\.github\.com|^noreply@github\.com)$' | tr '\n' ' ')
   if [ -z "$emails" ]; then out OK emails "all author emails are GitHub noreply"
   else out WARN emails "non-noreply author emails in history: ${emails% }"; fi
 fi
@@ -115,10 +115,73 @@ else
   else out FAIL tests "$TEST_CMD failed"; tail -20 "$log" | while IFS= read -r l; do out INFO tests "$l"; done; fi
 fi
 
-# --- GitHub-dependent community files (online part added later) --------------
+# --- GitHub: owner conventions, CI, metadata -----------------------------------
+ONLINE=""
+if [ "${OSR_OFFLINE:-}" != 1 ] && command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+  INFO=$(gh repo view --json nameWithOwner,visibility,defaultBranchRef,description \
+    --jq '[.nameWithOwner, .visibility, .defaultBranchRef.name, .description] | @tsv' 2>/dev/null) && ONLINE=1
+fi
+if [ -z "$ONLINE" ]; then
+  for c in owner visibility ci description peers; do out SKIP "$c" "offline or gh not logged in"; done
+  for pair in code-of-conduct:CODE_OF_CONDUCT.md security-policy:SECURITY.md; do
+    name=${pair%%:*}; file=${pair#*:}
+    if community "$file"; then out OK "$name" "$file"; else out SKIP "$name" "offline or gh not logged in"; fi
+  done
+  exit "$BAD"
+fi
+
+IFS=$'\t' read -r NWO VIS DEF DESC <<<"$INFO"
+OWNER=${NWO%%/*}
+out INFO owner "$NWO"
+out INFO visibility "$VIS"
+OWNER_GH=""
+[ "$(gh api "repos/$OWNER/.github" --jq '.private' 2>/dev/null)" = false ] && OWNER_GH=1
+[ -z "$OWNER_GH" ] && out INFO owner "no public $OWNER/.github; defaults apply"
+raw()   { gh api "repos/$OWNER/.github/contents/$1" -H 'Accept: application/vnd.github.raw' 2>/dev/null; }
+owner_has() { local p; for p in "$@"; do gh api "repos/$OWNER/.github/contents/$p" --silent 2>/dev/null && return 0; done; return 1; }
+
+if [ -n "$OWNER_GH" ]; then
+  if [ -n "$LICENSE_FILE" ]; then
+    olic=$(raw LICENSE || true)
+    [ -n "$olic" ] && [ "$olic" != "$(cat "$LICENSE_FILE")" ] && out DIFF license "$LICENSE_FILE differs from $OWNER/.github LICENSE; left unchanged"
+  else
+    owner_has LICENSE && out INFO license "copy from $OWNER/.github LICENSE"
+  fi
+  if ! has_any NOTICE NOTICE.md NOTICE.txt && [ -z "$IS_APACHE" ] && owner_has NOTICE; then
+    out MISSING notice "$OWNER/.github has a NOTICE"
+  fi
+fi
 for pair in code-of-conduct:CODE_OF_CONDUCT.md security-policy:SECURITY.md; do
   name=${pair%%:*}; file=${pair#*:}
-  if community "$file"; then out OK "$name" "$file"; else out SKIP "$name" "offline or gh not logged in"; fi
+  if community "$file"; then out OK "$name" "$file"
+  elif [ -n "$OWNER_GH" ] && owner_has "$file" ".github/$file" "docs/$file"; then out OK "$name" "inherited from $OWNER/.github"
+  else out MISSING "$name" "no $file here or in $OWNER/.github"; fi
 done
+
+if [ -d .github/workflows ]; then
+  concl=$(gh run list --branch "$DEF" --status completed --limit 1 --json conclusion --jq '.[0].conclusion // empty' 2>/dev/null)
+  case "$concl" in
+    success) out OK ci "latest completed run on $DEF passed";;
+    "") out MISSING ci "no completed CI run on $DEF";;
+    *) out FAIL ci "latest completed run on $DEF: $concl";;
+  esac
+else out SKIP ci "no workflows"; fi
+
+if [ -n "$DESC" ]; then out OK description "\"$DESC\""; else out MISSING description "GitHub repo description is empty"; fi
+
+REPO=${NWO#*/}
+peers=$(gh repo list "$OWNER" --visibility public --no-archived --source --limit 50 --json name --jq '.[].name' 2>/dev/null \
+  | grep -vx -e "$REPO" -e .github || true)
+if [ -z "$peers" ]; then out INFO peers "no other public repos"
+else
+  n=0; it=0; db=0
+  while IFS= read -r r; do
+    n=$((n+1))
+    gh api "repos/$OWNER/$r/contents/.github/ISSUE_TEMPLATE" --silent 2>/dev/null && it=$((it+1))
+    gh api "repos/$OWNER/$r/contents/.github/dependabot.yml" --silent 2>/dev/null && db=$((db+1))
+  done <<<"$peers"
+  out INFO peers "$it/$n have issue-templates"
+  out INFO peers "$db/$n have dependabot"
+fi
 
 exit "$BAD"
