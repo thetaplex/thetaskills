@@ -82,3 +82,9 @@ run "$T/gi"; hasnt '^(MISSING|FAIL) +(owner|ci|description|peers)'
 # web-UI merges are committed by GitHub itself; not personal data
 repo "$T/web"; echo w > "$T/web/w"; git -C "$T/web" add w
 GIT_COMMITTER_EMAIL=noreply@github.com git -C "$T/web" commit -qm w; run "$T/web"; has '^OK +emails'
+
+# kebab-case words ending in "sk" are not OpenAI-style keys
+repo "$T/kebab"; echo "see the task-force-documentation-pages-here" > "$T/kebab/doc"; git -C "$T/kebab" add doc; git -C "$T/kebab" commit -qm d
+run "$T/kebab"; has '^OK +secrets'
+echo "OPENAI_API_KEY=sk""-abcdefghijklmnopqrstuvwx" >> "$T/kebab/doc"; git -C "$T/kebab" commit -qam k
+run "$T/kebab"; has '^FAIL +secrets'

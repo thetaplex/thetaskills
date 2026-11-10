@@ -73,7 +73,7 @@ elif [ "$SCANNER" = gitleaks ]; then
   else out FAIL secrets "findings in history (scanner: gitleaks); run: gitleaks git --redact -v"; fi
 else
   # ponytail: a handful of high-signal token patterns; install gitleaks for real coverage
-  PAT='AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{22,}|sk-[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{35}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+  PAT='AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{22,}|(^|[^A-Za-z0-9])sk-[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{35}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
   hits=$(git log --all -p --no-color --format='commit %H' 2>/dev/null | awk -v pat="$PAT" '
     /^commit / { c=$2; next }  /^\+\+\+ b\// { f=substr($0,7); next }
     /^\+/ && $0 ~ pat { print c ":" f }' | sort -u)
