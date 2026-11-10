@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `vibe-scaffold`: when the project is in another folder, the agent ends with the exact `cd … && <agent>` command to continue there.
 - `vibe-scaffold` setup installs the latest release of superpowers, ponytail and rtk (when built with cargo) instead of their latest commit.
 
 ## [0.1.0] - 2026-11-09
