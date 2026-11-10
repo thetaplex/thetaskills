@@ -14,9 +14,25 @@ log()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!! \033[0m %s\n' "$*" >&2; }
 have() { command -v "$1" >/dev/null 2>&1; }
 
-clone_or_pull() { # <url> <dir>
-  if [ -d "$2/.git" ]; then git -C "$2" pull --ff-only -q || warn "could not update $2"
-  else git clone -q --depth 1 "$1" "$2"; fi
+latest_tag() { # <url>: newest vX.Y.Z tag, empty if none
+  # ponytail: highest semver tag, not GitHub's "latest release" flag; avoids needing gh or the API
+  git ls-remote --tags --refs --sort=-v:refname "$1" 'v*' 2>/dev/null \
+    | sed 's#.*refs/tags/##' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sed -n 1p || true
+}
+
+clone_or_pull() { # <url> <dir>: check out the newest release tag, or the default branch if there is none
+  local tag; tag=$(latest_tag "$1")
+  if [ -z "$tag" ]; then
+    warn "no release tag for $1 - using its default branch"
+    if [ -d "$2/.git" ]; then git -C "$2" pull --ff-only -q || warn "could not update $2"
+    else git clone -q --depth 1 "$1" "$2"; fi
+    return 0
+  fi
+  if [ -d "$2/.git" ]; then
+    { git -C "$2" fetch -q --depth 1 origin tag "$tag" && git -C "$2" -c advice.detachedHead=false checkout -q "$tag"; } \
+      || { warn "could not update $2 to $tag"; return 0; }
+  else git -c advice.detachedHead=false clone -q --depth 1 --branch "$tag" "$1" "$2"; fi
+  log "$(basename "$2") $tag"
 }
 
 link_pack() { # <checkout dir>: symlink each skill folder flat into ~/.agents/skills
@@ -43,7 +59,7 @@ else warn "npm not found - install Node.js >= 20.19, then: npm install -g @fissi
 log "rtk"
 if ! rtk gain >/dev/null 2>&1; then
   if have brew; then brew install rtk || warn "brew install rtk failed"
-  elif have cargo; then cargo install --git https://github.com/rtk-ai/rtk rtk || warn "cargo install rtk failed"
+  elif have cargo; then RTK_TAG=$(latest_tag https://github.com/rtk-ai/rtk); cargo install --git https://github.com/rtk-ai/rtk ${RTK_TAG:+--tag "$RTK_TAG"} rtk || warn "cargo install rtk failed"
   else warn "install rtk via brew, cargo, or https://github.com/rtk-ai/rtk/releases"; fi
 fi
 if rtk gain >/dev/null 2>&1; then

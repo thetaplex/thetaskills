@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `vibe-scaffold` setup installs the latest release of superpowers, ponytail and rtk (when built with cargo) instead of their latest commit.
+
 ## [0.1.0] - 2026-11-09
 
 First release.
