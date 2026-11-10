@@ -88,3 +88,20 @@ repo "$T/kebab"; echo "see the task-force-documentation-pages-here" > "$T/kebab/
 run "$T/kebab"; has '^OK +secrets'
 echo "OPENAI_API_KEY=sk""-abcdefghijklmnopqrstuvwx" >> "$T/kebab/doc"; git -C "$T/kebab" commit -qam k
 run "$T/kebab"; has '^FAIL +secrets'
+
+# --- private vulnerability reporting (online path, via a stub gh on PATH) ---
+run "$T/empty"; has '^SKIP +security-reporting'
+mkdir -p "$T/bin"; cat > "$T/bin/gh" <<'STUB'
+#!/usr/bin/env bash
+case "$*" in
+  "auth status") exit 0;;
+  "repo view "*) printf 'o/r\tPRIVATE\tmain\tdesc\n';;
+  *private-vulnerability-reporting*) [ -n "${PVR:-}" ] && echo "$PVR" || exit 1;;
+  *) exit 1;;
+esac
+STUB
+chmod +x "$T/bin/gh"
+online() { OUT=$(OSR_OFFLINE= PATH="$T/bin:$PATH" PVR="$1" bash "$C" "$T/gi" 2>&1); RC=$?; }
+online false; has '^MISSING +security-reporting'; rc 1
+online true;  has '^OK +security-reporting'
+online "";    has '^WARN +security-reporting'
