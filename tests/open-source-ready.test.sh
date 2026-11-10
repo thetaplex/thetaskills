@@ -55,3 +55,22 @@ mkdir -p "$T/fresh"; git -C "$T/fresh" init -q; run "$T/fresh"
 [ "$RC" != 2 ] || { echo "fresh repo crashed:"; echo "$OUT"; exit 1; }; has '^OK +secrets .*no commits'
 SHA=$(git -C "$T/leak" rev-parse HEAD~1)               # accepted finding, gitleaks fingerprint format
 echo "$SHA:cfg:aws-access-token:1" > "$T/leak/.gitleaksignore"; run "$T/leak"; has '^OK +secrets'
+
+# --- Task 3: gitignore, tests ----------------------------------------------
+repo "$T/gi"; mkdir "$T/gi/.serena"; : > "$T/gi/.serena/x"; run "$T/gi"; has '^MISSING +gitignore .*\.serena'
+printf '.serena/\n.DS_Store\n' > "$T/gi/.gitignore"; git -C "$T/gi" add .gitignore; git -C "$T/gi" commit -qm gi
+run "$T/gi"; has '^OK +gitignore'
+
+repo "$T/npm"; echo '{"scripts":{"test":"true"}}' > "$T/npm/package.json"; run "$T/npm"; has '^OK +tests .*npm test'
+OUT=$(OSR_TEST_CMD=false bash "$C" "$T/npm" 2>&1); RC=$?; rc 1; has '^FAIL +tests'
+repo "$T/notest"; run "$T/notest"; has '^MISSING +tests'
+if command -v just >/dev/null; then
+  printf 'check:\n\ttrue\n' > "$T/npm/justfile"; run "$T/npm"; has '^OK +tests .*just check'; rm "$T/npm/justfile"
+fi
+
+repo "$T/my repo"; ( cd / && run "$T/my repo"; [ "$RC" != 2 ] ) || { echo "path with spaces failed"; exit 1; }
+
+for d in empty eco alt leak gi npm "my repo"; do              # read-only: no new or changed files
+  before=$(git -C "$T/$d" status --porcelain); run "$T/$d"
+  [ "$(git -C "$T/$d" status --porcelain)" = "$before" ] || { echo "check.sh changed $d"; exit 1; }
+done

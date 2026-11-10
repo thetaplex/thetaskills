@@ -92,6 +92,29 @@ paths=$(git grep -nIE '/(Users|home)/[a-z][a-z0-9._-]+/' 2>/dev/null | head -5 |
 if [ -n "$paths" ]; then out WARN home-paths "absolute home paths in tracked files: ${paths% }"
 else out OK home-paths "none in tracked files"; fi
 
+# --- 6. Hygiene ----------------------------------------------------------------
+unignored=""
+git check-ignore -q --no-index .DS_Store || unignored=".DS_Store"
+for d in .serena .idea .vscode .venv node_modules __pycache__ .env; do
+  [ -e "$d" ] && ! git check-ignore -q --no-index "$d" && unignored="$unignored $d"
+done
+if [ -n "$unignored" ]; then out MISSING gitignore "not ignored: ${unignored# }"; else out OK gitignore ".gitignore covers OS and tool files"; fi
+
+# --- 8. Tests -------------------------------------------------------------------
+TEST_CMD="${OSR_TEST_CMD:-}"
+if [ -z "$TEST_CMD" ] && command -v just >/dev/null 2>&1 && has_any justfile Justfile .justfile; then
+  for r in check test; do just --summary 2>/dev/null | tr ' ' '\n' | grep -qx "$r" && { TEST_CMD="just $r"; break; }; done
+fi
+if [ -z "$TEST_CMD" ] && [ -f package.json ] && grep -q '"test"[[:space:]]*:' package.json; then
+  if [ -f pnpm-lock.yaml ]; then TEST_CMD="pnpm test"; else TEST_CMD="npm test"; fi
+fi
+if [ -z "$TEST_CMD" ]; then out MISSING tests "no test command found (set OSR_TEST_CMD)"
+else
+  log=$(mktemp); trap 'rm -f "$log"' EXIT
+  if sh -c "$TEST_CMD" >"$log" 2>&1; then out OK tests "$TEST_CMD passed"
+  else out FAIL tests "$TEST_CMD failed"; tail -20 "$log" | while IFS= read -r l; do out INFO tests "$l"; done; fi
+fi
+
 # --- GitHub-dependent community files (online part added later) --------------
 for pair in code-of-conduct:CODE_OF_CONDUCT.md security-policy:SECURITY.md; do
   name=${pair%%:*}; file=${pair#*:}
