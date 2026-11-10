@@ -22,6 +22,7 @@ Requires `gh`, logged in. `scripts/` and `references/` are relative to this skil
    - **dependabot:** follow `references/dependabot.md`, using the ecosystems on the `dependabot` line.
    - **gitignore:** add the listed entries.
    - **tests:** ask the user for the test command, then check again with `OSR_TEST_CMD="<cmd>"`. If tests fail, stop and report. Fixing them is a separate task.
+   - **security-reporting:** private vulnerability reporting is off, so the security links in `SECURITY.md` and the issue picker lead nowhere. Once the user confirms, turn it on with the command on that line.
    - **ci:** report it. A red CI run blocks the release.
    - **description:** propose one matching the README's opening line, and set it with `gh repo edit --description` once the user confirms.
 

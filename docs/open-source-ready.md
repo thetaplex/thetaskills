@@ -7,6 +7,7 @@ Say **"open source this repo"** in a GitHub repository. The agent gets it ready 
 - **issue templates** with fields that fit the project
 - **`.github/dependabot.yml`** for the package managers it finds
 - **a secret scan of the full git history,** plus author emails and absolute home paths
+- **private vulnerability reporting,** turned on once you confirm, so security reports have somewhere to go
 - **`.gitignore`, the README, tests, CI and the repo description**
 - **a first release,** tagged and published once you confirm
 

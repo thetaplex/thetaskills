@@ -122,7 +122,7 @@ if [ "${OSR_OFFLINE:-}" != 1 ] && command -v gh >/dev/null 2>&1 && gh auth statu
     --jq '[.nameWithOwner, .visibility, .defaultBranchRef.name, .description] | @tsv' 2>/dev/null) && ONLINE=1
 fi
 if [ -z "$ONLINE" ]; then
-  for c in owner visibility ci description peers; do out SKIP "$c" "offline or gh not logged in"; done
+  for c in owner visibility security-reporting ci description peers; do out SKIP "$c" "offline or gh not logged in"; done
   for pair in code-of-conduct:CODE_OF_CONDUCT.md security-policy:SECURITY.md; do
     name=${pair%%:*}; file=${pair#*:}
     if community "$file"; then out OK "$name" "$file"; else out SKIP "$name" "offline or gh not logged in"; fi
@@ -157,6 +157,14 @@ for pair in code-of-conduct:CODE_OF_CONDUCT.md security-policy:SECURITY.md; do
   elif [ -n "$OWNER_GH" ] && owner_has "$file" ".github/$file" "docs/$file"; then out OK "$name" "inherited from $OWNER/.github"
   else out MISSING "$name" "no $file here or in $OWNER/.github"; fi
 done
+
+# Private vulnerability reporting: SECURITY.md and issue-template links point at its form.
+pvr=$(gh api "repos/$NWO/private-vulnerability-reporting" --jq '.enabled' 2>/dev/null)
+case "$pvr" in
+  true) out OK security-reporting "private vulnerability reporting is on";;
+  false) out MISSING security-reporting "private vulnerability reporting is off; enable: gh api -X PUT repos/$NWO/private-vulnerability-reporting";;
+  *) out WARN security-reporting "could not read the private vulnerability reporting setting (needs admin access)";;
+esac
 
 if [ -d .github/workflows ]; then
   concl=$(gh run list --branch "$DEF" --status completed --limit 1 --json conclusion --jq '.[0].conclusion // empty' 2>/dev/null)
