@@ -1,0 +1,36 @@
+# Starting shape. Replace <project>, and adapt the "environment" field to the project type:
+#   CLI: version + OS and shell   library: language and runtime version   service: how it's deployed
+name: Bug report
+description: <project> does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not paste API keys, tokens or passwords. Security issues go through SECURITY.md, not here.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you got.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Error messages or logs, with secrets removed.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: <project> version
+      description: Release version or commit hash.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: e.g. macOS 15, zsh
+    validations:
+      required: true
