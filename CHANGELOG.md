@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-10
+
 ### Added
 
 - `open-source-ready`: checks that private vulnerability reporting is on, and offers to turn it on.
@@ -33,7 +35,8 @@ First release.
 - `vibe-scaffold` skill: scaffolds a repo with git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans the first feature.
 - Manifests for pi, Claude Code, Codex and the `.agents` marketplace, and `scripts/install.sh` for other agents.
 
-[Unreleased]: https://github.com/thetaplex/thetaskills/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/thetaplex/thetaskills/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/thetaplex/thetaskills/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/thetaplex/thetaskills/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/thetaplex/thetaskills/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/thetaplex/thetaskills/releases/tag/v0.1.0
