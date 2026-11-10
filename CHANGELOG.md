@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-10
+
 ### Changed
 
 - `vibe-scaffold`: when the project is in another folder, the agent ends with the exact `cd … && <agent>` command to continue there.
@@ -20,5 +22,6 @@ First release.
 - `vibe-scaffold` skill: scaffolds a repo with git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans the first feature.
 - Manifests for pi, Claude Code, Codex and the `.agents` marketplace, and `scripts/install.sh` for other agents.
 
-[Unreleased]: https://github.com/thetaplex/thetaskills/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/thetaplex/thetaskills/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/thetaplex/thetaskills/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/thetaplex/thetaskills/releases/tag/v0.1.0
