@@ -170,8 +170,15 @@ else out SKIP ci "no workflows"; fi
 if [ -n "$DESC" ]; then out OK description "\"$DESC\""; else out MISSING description "GitHub repo description is empty"; fi
 
 REPO=${NWO#*/}
-peers=$(gh repo list "$OWNER" --visibility public --no-archived --source --limit 50 --json name --jq '.[].name' 2>/dev/null \
-  | grep -vx -e "$REPO" -e .github || true)
+# Peers = the owner's 5 public, non-fork, non-archived repos with the most commits: one GraphQL call ranks them.
+# ponytail: ranks only the 100 most recently pushed repos; paginate if an owner has more that matter
+peers=$(gh api graphql -f owner="$OWNER" -f query='
+  query($owner: String!) { repositoryOwner(login: $owner) {
+    repositories(first: 100, privacy: PUBLIC, isFork: false, orderBy: {field: PUSHED_AT, direction: DESC}) {
+      nodes { name isArchived defaultBranchRef { target { ... on Commit { history { totalCount } } } } } } } }' \
+  --jq '.data.repositoryOwner.repositories.nodes[] | select(.isArchived | not)
+        | "\(.defaultBranchRef.target.history.totalCount // 0)\t\(.name)"' 2>/dev/null \
+  | awk -F'\t' -v me="$REPO" '$2 != me && $2 != ".github"' | sort -t$'\t' -k1,1nr | head -5 | cut -f2 || true)
 if [ -z "$peers" ]; then out INFO peers "no other public repos"
 else
   n=0; it=0; db=0
@@ -180,6 +187,7 @@ else
     gh api "repos/$OWNER/$r/contents/.github/ISSUE_TEMPLATE" --silent 2>/dev/null && it=$((it+1))
     gh api "repos/$OWNER/$r/contents/.github/dependabot.yml" --silent 2>/dev/null && db=$((db+1))
   done <<<"$peers"
+  out INFO peers "compared with: $(echo "$peers" | tr '\n' ' ')"
   out INFO peers "$it/$n have issue-templates"
   out INFO peers "$db/$n have dependabot"
 fi

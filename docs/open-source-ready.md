@@ -14,7 +14,7 @@ It ends by printing `gh repo edit <owner>/<repo> --visibility public --accept-vi
 
 ## Where conventions come from
 
-The owner's public [`.github` repository](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) is the source. The skill copies its `LICENSE` and `NOTICE`, because GitHub never inherits those. It doesn't duplicate the files GitHub already inherits from there, such as the code of conduct and security policy. It also looks at the owner's other public repos, and if most of them have something (their own issue templates, Dependabot), it suggests the same thing. It never applies those automatically.
+The owner's public [`.github` repository](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) is the source. The skill copies its `LICENSE` and `NOTICE`, because GitHub never inherits those. It doesn't duplicate the files GitHub already inherits from there, such as the code of conduct and security policy. It also looks at the owner's five public repos with the most commits (skipping forks and archived repos), and if most of them have something (their own issue templates, Dependabot), it suggests the same thing. It never applies those automatically.
 
 ## What it changes
 
