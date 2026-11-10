@@ -41,6 +41,23 @@ Options (environment variables):
 - `OPENSPEC_TOOLS=opencode,pi` picks the OpenSpec targets. By default it uses the agents it finds installed.
 - `ALLOW_SUBDIR=1` sets up a subfolder of another repo on its own.
 
+## Without an agent
+
+The skill only wraps two scripts, and you can run both yourself from a checkout of this repo:
+
+```bash
+git clone https://github.com/thetaplex/thetaskills ~/thetaskills
+bash ~/thetaskills/skills/vibe-scaffold/scripts/setup.sh                 # once per machine
+bash ~/thetaskills/skills/vibe-scaffold/scripts/bootstrap.sh ~/code/my-app   # once per project
+```
+
+`bootstrap.sh` takes the project folder as its argument (the current folder if you leave it out) and creates the folder if it doesn't exist. It reads the same `OPENSPEC_TOOLS` and `ALLOW_SUBDIR` variables as above. Each line of output starts with `OK`, `SKIP`, `WARN`, `FAIL` or `STOP`. It exits with code 2 when it stops because the folder is inside another repo.
+
+The scripts don't do the parts the agent would:
+
+1. Replace the `<!-- describe the project -->` placeholder in `AGENTS.md` with the project's name and purpose.
+2. Start your agent in the project folder and propose the first change with `/opsx:propose <what you want to build>`.
+
 ## Uninstall
 
 ```bash
