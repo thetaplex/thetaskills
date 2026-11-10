@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- `open-source-ready` skill: gets a GitHub repo ready to make public using its owner's conventions, and stops before the visibility change.
 - `vibe-scaffold` docs: a "Without an agent" section on running `setup.sh` and `bootstrap.sh` directly.
 
 ## [0.1.1] - 2026-11-10
