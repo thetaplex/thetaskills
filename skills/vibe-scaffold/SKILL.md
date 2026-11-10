@@ -28,7 +28,7 @@ Set up the current repository (or a folder the user names) with the standard age
 
 5. **Hand off to planning.** Use the superpowers `brainstorming` skill to shape the first feature, then capture the result as an OpenSpec change. The `/opsx:*` commands and OpenSpec skills were just created in this repo, so this session won't have loaded them yet. Read `<project-dir>/.opencode/skills/openspec-propose/SKILL.md` (or `<project-dir>/.pi/skills/openspec-propose/SKILL.md`) and follow it directly. Write every file inside `<project-dir>`. Tell the user that `/opsx:propose` works natively after they restart the agent (pi: `/reload`). Follow ponytail's ladder while you do it: start with the smallest version that works.
 
-6. **Report back briefly:** what was set up, any `WARN`/`FAIL` lines, and the proposed first change. If `<project-dir>` isn't the folder this session started in, tell the user to `cd` into it and start the agent again there, so the project's `AGENTS.md` and `/opsx:*` commands load.
+6. **Report back briefly:** what was set up, any `WARN`/`FAIL` lines, and the proposed first change. If `<project-dir>` isn't the folder this session started in, end with the exact command to continue there, using the absolute path and the agent you are running in (for example `cd /abs/path/to/demo && claude`, `cd /abs/path/to/demo && opencode`, or `cd /abs/path/to/demo && pi`), so the project's `AGENTS.md` and `/opsx:*` commands load. Don't keep working on the project from this session.
 
 ## Rules
 
