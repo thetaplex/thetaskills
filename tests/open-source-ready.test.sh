@@ -34,3 +34,24 @@ repo "$T/apache"; echo "Apache License" > "$T/apache/LICENSE"; run "$T/apache"; 
 repo "$T/mit"; echo "MIT License" > "$T/mit/LICENSE"; run "$T/mit"; hasnt '^MISSING +notice'
 
 mkdir -p "$T/plain"; run "$T/plain"; rc 2; has '^FAIL +repo'
+
+# --- Task 2: secrets, emails, home paths -----------------------------------
+K="AKIA""ABCDEFGHIJKLMNOP"                       # fake key, assembled so this file never contains it
+repo "$T/leak"; echo "key=$K" > "$T/leak/cfg"; git -C "$T/leak" add cfg; git -C "$T/leak" commit -qm add
+git -C "$T/leak" rm -q cfg; git -C "$T/leak" commit -qm remove        # deleted, but still in history
+run "$T/leak"; rc 1; has '^FAIL +secrets .*scanner: builtin'; hasnt "$K"
+
+repo "$T/clean"; run "$T/clean"; has '^OK +secrets .*scanner: builtin'; has '^OK +emails'
+
+repo "$T/mail"; echo y > "$T/mail/y"; git -C "$T/mail" add y
+GIT_AUTHOR_EMAIL=dev@example.com git -C "$T/mail" commit -qm y; run "$T/mail"; has '^WARN +emails .*dev@example.com'
+
+repo "$T/home"; echo "see /Use""rs/alice/x" > "$T/home/notes"; git -C "$T/home" add notes; git -C "$T/home" commit -qm n
+run "$T/home"; has '^WARN +home-paths'
+repo "$T/placeholder"; echo "/Users/<name>/x" > "$T/placeholder/n"; git -C "$T/placeholder" add n; git -C "$T/placeholder" commit -qm n
+run "$T/placeholder"; hasnt '^WARN +home-paths'
+
+mkdir -p "$T/fresh"; git -C "$T/fresh" init -q; run "$T/fresh"
+[ "$RC" != 2 ] || { echo "fresh repo crashed:"; echo "$OUT"; exit 1; }; has '^OK +secrets .*no commits'
+SHA=$(git -C "$T/leak" rev-parse HEAD~1)               # accepted finding, gitleaks fingerprint format
+echo "$SHA:cfg:aws-access-token:1" > "$T/leak/.gitleaksignore"; run "$T/leak"; has '^OK +secrets'

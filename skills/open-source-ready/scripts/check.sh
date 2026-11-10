@@ -61,6 +61,37 @@ ecosystems() { # print detected Dependabot ecosystems, space-separated
 if has_any .github/dependabot.yml .github/dependabot.yaml; then out OK dependabot ".github/dependabot.yml"
 else eco=$(ecosystems); out MISSING dependabot "no .github/dependabot.yml; ecosystems: ${eco:-none detected}"; fi
 
+# --- 5. Secrets and personal data ----------------------------------------------
+SCANNER="${OSR_SCANNER:-}"
+[ -z "$SCANNER" ] && { command -v gitleaks >/dev/null 2>&1 && SCANNER=gitleaks || SCANNER=builtin; }
+if ! git rev-parse -q --verify HEAD >/dev/null; then
+  out OK secrets "no commits (scanner: $SCANNER)"
+elif [ "$SCANNER" = gitleaks ]; then
+  if gitleaks git --redact --no-banner --exit-code 1 . >/dev/null 2>&1 \
+     || { [ $? -ne 1 ] && gitleaks detect --redact --no-banner --exit-code 1 >/dev/null 2>&1; }; then
+    out OK secrets "history clean (scanner: gitleaks)"
+  else out FAIL secrets "findings in history (scanner: gitleaks); run: gitleaks git --redact -v"; fi
+else
+  # ponytail: a handful of high-signal token patterns; install gitleaks for real coverage
+  PAT='AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{22,}|sk-[A-Za-z0-9_-]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{35}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+  hits=$(git log --all -p --no-color --format='commit %H' 2>/dev/null | awk -v pat="$PAT" '
+    /^commit / { c=$2; next }  /^\+\+\+ b\// { f=substr($0,7); next }
+    /^\+/ && $0 ~ pat { print c ":" f }' | sort -u)
+  if [ -n "$hits" ] && [ -f .gitleaksignore ]; then   # accepted findings: <sha>:<file>[:rule:line]
+    hits=$(echo "$hits" | while IFS= read -r h; do grep -qF "$h" .gitleaksignore || echo "$h"; done)
+  fi
+  if [ -z "$hits" ]; then out OK secrets "history clean (scanner: builtin)"
+  else out FAIL secrets "possible secrets in history (scanner: builtin) at $(echo "$hits" | tr '\n' ' ')"; fi
+fi
+if git rev-parse -q --verify HEAD >/dev/null; then
+  emails=$(git log --all --format='%ae%n%ce' | sort -u | grep -v '@users\.noreply\.github\.com$' | tr '\n' ' ')
+  if [ -z "$emails" ]; then out OK emails "all author emails are GitHub noreply"
+  else out WARN emails "non-noreply author emails in history: ${emails% }"; fi
+fi
+paths=$(git grep -nIE '/(Users|home)/[a-z][a-z0-9._-]+/' 2>/dev/null | head -5 | cut -d: -f1,2 | tr '\n' ' ')
+if [ -n "$paths" ]; then out WARN home-paths "absolute home paths in tracked files: ${paths% }"
+else out OK home-paths "none in tracked files"; fi
+
 # --- GitHub-dependent community files (online part added later) --------------
 for pair in code-of-conduct:CODE_OF_CONDUCT.md security-policy:SECURITY.md; do
   name=${pair%%:*}; file=${pair#*:}
