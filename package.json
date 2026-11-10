@@ -1,6 +1,6 @@
 {
   "name": "thetaskills",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The agent skills ThetaPlex uses internally, published for pi, opencode, Claude Code, Codex and any Agent Skills agent.",
   "keywords": ["pi-package", "pi", "opencode", "skills", "agent-skills", "scaffold", "openspec"],
   "license": "Apache-2.0",
