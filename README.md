@@ -8,6 +8,7 @@ The agent skills we use internally at ThetaPlex, published so anyone can use the
 |---|---|---|
 | [vibe-scaffold](skills/vibe-scaffold/SKILL.md) | "let's start a new project" | Scaffolds the repo with git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans your first feature. [Details](docs/vibe-scaffold.md) |
 | [open-source-ready](skills/open-source-ready/SKILL.md) | "open source this repo" | Gets a GitHub repo ready to make public using its owner's conventions, and stops before the switch. [Details](docs/open-source-ready.md) |
+| [codebase-to-deck](skills/codebase-to-deck/SKILL.md) | "turn this codebase into a presentation" | Writes a slide deck (Marp Markdown and PDF, ThetaPlex theme) that teaches non-technical readers how a codebase works, with an FAQ after each part. Builds on [codebase-to-course](https://github.com/zarazhangrui/codebase-to-course). [Details](docs/codebase-to-deck.md) |
 
 ### Research, writing and assistant skills
 

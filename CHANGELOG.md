@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `codebase-to-deck` skill: turns a codebase into a Marp and PDF slide deck in the ThetaPlex theme, with an FAQ after each part. Builds on codebase-to-course.
+
 ## [0.3.0] - 2026-11-10
 
 ### Added
