@@ -1,6 +1,6 @@
 # book-research
 
-Written for small local models (4B to 8B parameters) and works in any agent. See [Writing skills for small models](writing-skills.md) for how these skills are built.
+See [How these skills are built](writing-skills.md).
 
 Say something like **"I am writing a book about the 1854 cholera outbreak"**.
 

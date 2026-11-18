@@ -1,6 +1,6 @@
 # write-ste
 
-Written for small local models (4B to 8B parameters) and works in any agent. See [Writing skills for small models](writing-skills.md) for how these skills are built.
+See [How these skills are built](writing-skills.md).
 
 Say something like **"fix the style errors in this draft"**.
 

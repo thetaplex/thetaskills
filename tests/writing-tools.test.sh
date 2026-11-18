@@ -24,7 +24,29 @@ python3 "$SRC" add --url https://a.example --title "Again" | grep -q "^exists \[
 printf 'Fact [S1].\n\n## References\n- [S1] A\n' > d.md
 python3 "$SRC" check d.md | grep -q "Orphans (in ledger, never cited): S2" || die "orphans"
 printf 'Fact [S9].\n' > d2.md
-python3 "$SRC" check d2.md | grep -q "Missing from ledger (not allowed): S9" && die "missing key passed"
+out=$(python3 "$SRC" check d2.md) && die "missing key passed"
+grep -q "Missing from ledger (not allowed): S9" <<<"$out" || die "missing report: $out"
+printf 'Fact [S1].\nTODO findings\n' > d3.md
+out=$(python3 "$SRC" check d3.md) && die "TODO line passed"
+grep -q "TODO lines left (not allowed), line: 2" <<<"$out" || die "TODO report: $out"
+printf 'One two three [S1].\n\n## References\n- [S1] A b c d e f\n' > d4.md
+python3 "$SRC" check d4.md --words 3-5 | grep -q "^PASS" || die "words in range"
+out=$(python3 "$SRC" check d4.md --words 10-20) && die "short draft passed"
+grep -q "Length: 3 words, want 10 to 20" <<<"$out" || die "length report: $out"
+
+# Notes: append under a heading, keep the heading, refuse unknown keys
+python3 "$SRC" note --heading "Q1 What is A?" --text "[S1] A is a fact (p. 2)" >/dev/null
+python3 "$SRC" note --heading "Q2 What is B?" --text "[S2] B fact" >/dev/null
+python3 "$SRC" note --heading "q1  what is a?" --text "[S2] Second A fact" >/dev/null
+[ "$(cat research/notes.md)" = "$(printf '# Notes\n\n## Q1 What is A?\n- [S1] A is a fact (p. 2)\n- [S2] Second A fact\n\n## Q2 What is B?\n- [S2] B fact')" ] || die "notes: $(cat research/notes.md)"
+python3 "$SRC" note --heading "Q1 What is A?" --text "[S7] made up" 2>/dev/null && die "unknown note key passed"
+grep -q "S7" research/notes.md && die "unknown key written"
+
+# Refs: one line per cited key, replaces the TODO line, safe to re-run
+printf '# T\n\nFact [S2] and [S1].\n\n## References\nTODO references\n' > r.md
+python3 "$SRC" refs r.md >/dev/null && python3 "$SRC" refs r.md >/dev/null
+[ "$(sed -n '/^## References/,$p' r.md)" = "$(printf '## References\n- [S1] Unknown author (n.d.). Paper A. https://a.example\n- [S2] Ng, Li (2024). Paper B. https://b.example')" ] || die "refs: $(cat r.md)"
+python3 "$SRC" check r.md | grep -q "^PASS" || die "refs then check"
 
 # Docket: add, dedupe, update, markdown, ics
 python3 "$DOCKET" add --title "Renew cert" --priority 3 --due 2026-11-24 | grep -q "\[D1\]" || die "add D1"
