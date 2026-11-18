@@ -6,11 +6,13 @@ description: Judges search results before reading them. Scores each result 1 to 
 
 ## Tools
 
-Run these from the project folder. `scripts/` is in this skill's folder.
+Run these from the project folder.
 
-- Register a source: `python3 scripts/sources.py add --url <url> --title "<title>" --relevance <1-5>`. Add `--authors "A, B"`, `--year`, `--doi` or `--note` if you know them. It prints the key, like `[S3]`. A known url or DOI prints the key it already has.
-- List the sources, best first: `python3 scripts/sources.py list`
-- Check a draft's keys: `python3 scripts/sources.py check <draft.md>`
+- Register a source: `python3 <this skill's folder>/scripts/sources.py add --url <url> --title "<title>" --relevance <1-5>`. Add `--authors "A, B"`, `--year`, `--doi` or `--note` if you know them. It prints the key, like `[S3]`. A known url or DOI prints the key it already has.
+- List the sources, best first: `python3 <this skill's folder>/scripts/sources.py list`
+- Add a note: `python3 <this skill's folder>/scripts/sources.py note --heading "<heading>" --text "[S2] <one fact> (page)"`. It adds the line under `## <heading>` in `research/notes.md` (`--file` for another file). It refuses a key that the ledger does not have.
+- Write a draft's references: `python3 <this skill's folder>/scripts/sources.py refs <draft.md>`
+- Check a draft: `python3 <this skill's folder>/scripts/sources.py check <draft.md> [--words MIN-MAX]`. It checks the keys, the TODO lines and the length.
 
 ## 1. Score each result 1 to 5
 
@@ -37,7 +39,7 @@ Register each result with a score of 2 or more. Use the title from the search re
 
 1. List the sources. The list shows the highest relevance first.
 2. Read the 5s and 4s first, then the 3s.
-3. Right after you read, add the facts to `research/notes.md`, one per line: `- [S2] <one fact> (section or page)`. Put them under the heading of the question, like `## Q1 ...`.
+3. Right after you read, add each fact with the note command: `--heading` is the question, like `Q1 ...`, and `--text` is `[S2] <one fact> (section or page)`.
 
 ## 4. Cite from the top
 

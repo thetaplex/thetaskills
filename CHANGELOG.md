@@ -9,6 +9,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - `codebase-to-deck` skill: turns a codebase into a Marp and PDF slide deck in the ThetaPlex theme, with an FAQ after each part. Builds on codebase-to-course.
+- `sources.py note` adds one note under a heading and refuses keys that are not in the ledger. The research skills use it in place of hand edits.
+- `sources.py refs` writes the References list of a draft from the ledger.
+
+### Changed
+
+- `sources.py check` also fails on TODO lines left in a draft, and with `--words MIN-MAX` on a length out of range.
+- book-research and source-triage add notes with `sources.py note`.
+
+### Removed
+
+- Skills `deep-research`, `research-method`, `draft-communication`, `weekly-review`, `write-book-chapter`, `write-brief`, `write-report`, `write-research-paper`, `write-research-proposal` and `write-essay`. A capable model does these without a skill. This repo now publishes only skills that add a script or state that models lack.
 
 ## [0.3.0] - 2026-11-10
 

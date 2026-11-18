@@ -17,6 +17,7 @@ tests/run.sh                all checks (npm test)
 
 ## Rules
 
+- Publish a skill only if it adds a script, a check or state that a capable model lacks. A skill that is only instructions a medium or large model already follows stays out of this repo.
 - The frontmatter `name` must match the folder name: lowercase letters, digits and hyphens, at most 64 characters.
 - The `description` says what the skill does and when to use it, including the phrases a user would say. Agents pick skills from this field alone.
 - Keep `SKILL.md` short. Move long material into `references/` and link to it.
