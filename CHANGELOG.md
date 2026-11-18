@@ -6,20 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-18
+
 ### Added
 
 - `codebase-to-deck` skill: turns a codebase into a Marp and PDF slide deck in the ThetaPlex theme, with an FAQ after each part. Builds on codebase-to-course.
-- `sources.py note` adds one note under a heading and refuses keys that are not in the ledger. The research skills use it in place of hand edits.
-- `sources.py refs` writes the References list of a draft from the ledger.
+- `source-triage` skill and its source ledger, `sources.py`: stable `[S#]` keys (`add`, `list`), notes that may cite only registered keys (`note`), a draft's References from the ledger (`refs`), and a draft check for unknown keys, TODO lines left and, with `--words MIN-MAX`, the length (`check`).
+- `book-research` skill: intake questions in the first session, then one research file per chapter, filled over many sessions with source keys.
+- `write-ste` skill: the ASD-STE100 Simplified Technical English rules and a script that checks the measurable ones.
+- `manage-docket` skill: tasks, events, decisions and notes in `docket/docket.json` with `[D#]` keys, and RFC 5545 `.ics` export.
 
 ### Changed
 
-- `sources.py check` also fails on TODO lines left in a draft, and with `--words MIN-MAX` on a length out of range.
-- book-research and source-triage add notes with `sources.py note`.
-
-### Removed
-
-- Skills `deep-research`, `research-method`, `draft-communication`, `weekly-review`, `write-book-chapter`, `write-brief`, `write-report`, `write-research-paper`, `write-research-proposal` and `write-essay`. A capable model does these without a skill. This repo now publishes only skills that add a script or state that models lack.
+- The repository publishes only skills that add a script, a check or state that a capable model lacks.
 
 ## [0.3.0] - 2026-11-10
 
@@ -50,7 +49,9 @@ First release.
 - `vibe-scaffold` skill: scaffolds a repo with git, OpenSpec specs and an `AGENTS.md` wired for superpowers, ponytail, rtk and headroom, then plans the first feature.
 - Manifests for pi, Claude Code, Codex and the `.agents` marketplace, and `scripts/install.sh` for other agents.
 
-[Unreleased]: https://github.com/thetaplex/thetaskills/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/thetaplex/thetaskills/compare/v0.4.0...HEAD
+
+[0.4.0]: https://github.com/thetaplex/thetaskills/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/thetaplex/thetaskills/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/thetaplex/thetaskills/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/thetaplex/thetaskills/compare/v0.1.0...v0.1.1

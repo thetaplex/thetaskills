@@ -1,6 +1,6 @@
 {
   "name": "thetaskills",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A selection of the agent skills ThetaPlex uses, published for pi, opencode, Claude Code, Codex and any Agent Skills agent.",
   "author": { "name": "thetaplex", "url": "https://github.com/thetaplex" },
   "homepage": "https://github.com/thetaplex/thetaskills",
